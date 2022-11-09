@@ -15,7 +15,7 @@ const bookingTimes = [18, 19];
 
 const domain = 'scr.cyc.org.tw';
 const tpsiteMap = {'南港': '02', '內湖': '12'};
-const maxWorker = 3;
+const maxWorker = 5;
 const idleSeconds = 25;
 var timerMap = {};
 var penddingQueue = [];
@@ -32,7 +32,7 @@ function pushQueue(tpsite, date, time, stage) {
 
 function lauchBooking() {
     if (penddingQueue.length == 0) { return false; }
-    var url = penddingQueue.splice(0, 1)[0];
+    var url = penddingQueue.splice(-1, 1)[0];
     var dataset = url.split('25&Q')[1];
     penddingAjax.push(url);
     console.log(`[場次預訂] ${dataset} 請求中..`);
@@ -135,7 +135,7 @@ function ajaxCheckList(tpsite = '12', date = '04/24', page = 2, allowedTimes = [
             error: (evt) => {
                 if (penddingQueue.length == 0) {
                     console.log('Timeout!!!. Just do it!!!');
-                    const stages = [87, 1074, 88];
+                    const stages = [87, 1074, 88, 86];
                     const res = [];
                     bookingTimes.map(time => {
                         stages.map(stage => {
